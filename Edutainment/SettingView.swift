@@ -12,6 +12,7 @@ struct SettingView: View {
     
     @State private var number: Int = 4
     @State private var totalQuestions: Int = 5
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -50,8 +51,11 @@ struct SettingView: View {
                         .padding([.horizontal, .vertical], 25)
                 }
             }
+            .navigationTitle("Settings")
+            .navigationBarTitleDisplayMode(.inline)
             .foregroundColor(.accentColor)
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
 

@@ -9,25 +9,29 @@ import SwiftUI
 
 struct LandingView: View {
     var body: some View {
-        VStack {
-            Spacer()
-            Text("Edutainment")
-                .font(.largeTitle.weight(.bold))
-                .foregroundColor(.purple)
-            
-            Spacer()
-            Button() {
+        NavigationView {
+            VStack {
+                Spacer()
+                Text("Edutainment")
+                    .font(.largeTitle.weight(.bold))
+                    .foregroundColor(.purple)
                 
-            } label: {
-                Text("Start!")
-                    .font(.title2.weight(.semibold))
-                    .frame(maxWidth: .infinity, maxHeight: 50)
-                    .background(.purple)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
-                    .padding([.horizontal, .vertical], 25)
+                Spacer()
+                NavigationLink(destination: SettingView()) {
+                    startButton
+                }
             }
         }
+    }
+    
+    var startButton: some View {
+        Text("Start!")
+            .font(.title2.weight(.semibold))
+            .frame(maxWidth: .infinity, maxHeight: 50)
+            .background(.purple)
+            .foregroundColor(.white)
+            .cornerRadius(10)
+            .padding([.horizontal, .vertical], 25)
     }
 }
 
