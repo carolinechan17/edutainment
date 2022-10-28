@@ -12,9 +12,7 @@ struct SettingView: View {
     
     @State private var number: Int = 4
     @State private var totalQuestions: Int = 5
-    
-    @State private var questions: [String] = []
-    @State private var answers: [Int] = []
+    @State private var isPlaying: Bool = false
     
     var body: some View {
         NavigationView {
@@ -43,9 +41,7 @@ struct SettingView: View {
                 }
                 
                 Button() {
-                    startGame(number: number, totalQuestions: totalQuestions)
-                    print(questions)
-                    print(answers)
+                    isPlaying = true
                 } label: {
                     Text("Play")
                         .font(.title2.weight(.semibold))
@@ -55,22 +51,15 @@ struct SettingView: View {
                         .cornerRadius(10)
                         .padding([.horizontal, .vertical], 25)
                 }
+                .fullScreenCover(isPresented: $isPlaying) {
+                    GameView(number: number + 1, totalQuestions: totalQuestions)
+                }
             }
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
             .foregroundColor(.accentColor)
         }
         .navigationBarBackButtonHidden(true)
-    }
-    
-    func startGame(number: Int, totalQuestions: Int) {
-        let items: [Int] = [1,2,3,4,5,6,7,8,9,10,11,12].shuffled()
-        for item in 0..<totalQuestions {
-            let tempQuestion = "\(number + 1) x \(items[item])"
-            let tempAnswer = (number+1) * items[item]
-            questions.append(tempQuestion)
-            answers.append(tempAnswer)
-        }
     }
 }
 
