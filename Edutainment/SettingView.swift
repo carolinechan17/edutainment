@@ -12,7 +12,7 @@ struct SettingView: View {
     
     @State private var number: Int = 4
     @State private var totalQuestions: Int = 5
-    @State private var isPlaying: Bool = false
+    @State public var isPlaying: Bool = false
     
     var body: some View {
         NavigationView {

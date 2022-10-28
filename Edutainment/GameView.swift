@@ -20,11 +20,15 @@ class NumbersOnly: ObservableObject {
 }
 
 struct GameView: View {
+    @Environment(\.presentationMode) var presentationMode
     @ObservedObject var input = NumbersOnly()
-    let constants: [Int] = [1,2,3,4,5,6,7,8,9,10,11,12].shuffled()
+    @State private var constants: [Int] = [1,2,3,4,5,6,7,8,9,10,11,12].shuffled()
     let number: Int
     let totalQuestions: Int
+    
+    @State private var timesPlaying: Int = 0
     @State private var score: Int = 0
+    @State private var isShowingAlert: Bool = false
     
     var body: some View {
         NavigationView {
@@ -44,6 +48,7 @@ struct GameView: View {
                         .keyboardType(.decimalPad)
                     
                     Button() {
+                        timesPlaying += 1
                         checkAnswer(Int(input.value) ?? 0)
                     } label: {
                         Text("Submit")
@@ -54,15 +59,39 @@ struct GameView: View {
                             .cornerRadius(10)
                             .padding([.horizontal, .vertical], 35)
                     }
+                    .alert("Score is \(score)", isPresented: $isShowingAlert) {
+                        if timesPlaying == totalQuestions {
+                            Button("Restart", action: restart)
+                            Button("Reset settings") {
+                                presentationMode.wrappedValue.dismiss()
+                            }
+                        } else {
+                            Button("Continue", action: next)
+                        }
+                    }
                 }
             }
         }
     }
     
     func checkAnswer(_ answer: Int) {
+        isShowingAlert = true
         if answer == number * constants[0] {
             score += 10
         }
+    }
+    
+    func restart() {
+        input.value = ""
+        score = 0
+        timesPlaying = 0
+        isShowingAlert = false
+    }
+    
+    func next() {
+        input.value = ""
+        isShowingAlert = false
+        constants = constants.shuffled()
     }
 }
 
