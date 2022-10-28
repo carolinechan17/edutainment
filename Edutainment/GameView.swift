@@ -29,6 +29,7 @@ struct GameView: View {
     @State private var timesPlaying: Int = 0
     @State private var score: Int = 0
     @State private var isShowingAlert: Bool = false
+    @State private var alertMessage: String = ""
     
     var body: some View {
         NavigationView {
@@ -62,12 +63,14 @@ struct GameView: View {
                     .alert("Score is \(score)", isPresented: $isShowingAlert) {
                         if timesPlaying == totalQuestions {
                             Button("Restart", action: restart)
-                            Button("Reset settings") {
+                            Button("Reset Settings") {
                                 presentationMode.wrappedValue.dismiss()
                             }
                         } else {
                             Button("Continue", action: next)
                         }
+                    } message: {
+                        Text(alertMessage)
                     }
                 }
             }
@@ -79,6 +82,15 @@ struct GameView: View {
         if answer == number * constants[0] {
             score += 10
         }
+        
+        if totalQuestions != timesPlaying {
+            alertMessage = "Press Continue to go to the next question"
+        } else {
+            alertMessage = """
+            Game Over!
+            Press Restart to restart the game or press Reset Settings to reset game settings
+            """
+        }
     }
     
     func restart() {
@@ -86,6 +98,7 @@ struct GameView: View {
         score = 0
         timesPlaying = 0
         isShowingAlert = false
+        constants = constants.shuffled()
     }
     
     func next() {
